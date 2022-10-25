@@ -7,23 +7,17 @@ const initialKoders = [
   {
     id: "1",
     name: "Rodrigo",
-    email: "rodrgio@kodemia.com",
-    age: 20,
-    generation: 21,
+    email: "rodrigo@kodemia.com",
   },
   {
     id: "2",
     name: "Emanuel",
     email: "emanuel@kodemia.com",
-    age: 20,
-    generation: 21,
   },
   {
     id: "3",
     name: "Héctor",
     email: "hector@kodemia.com",
-    age: 20,
-    generation: 21,
   },
 ];
 
@@ -55,8 +49,8 @@ export const handlers = [
     const newKoder = { id: `${newMaxId}`, ...body };
     const newKoders = [...koders, newKoder];
 
-    // const luck = 0.5;
-    const luck = Math.random();
+    const luck = 0.5;
+    // const luck = Math.random();
 
     if (luck >= 0.5) {
       await localforage.setItem("koders", newKoders);
@@ -65,5 +59,13 @@ export const handlers = [
     }
 
     return res(ctx.status(500, "There was an error. Please try again!"));
+  }),
+
+  rest.delete("koders/:koderId", async (req, res, ctx) => {
+    const { koderId } = req.params;
+    const koders = await localforage.getItem("koders");
+    const newKoders = koders.filter((koder) => koder.id !== koderId);
+    await localforage.setItem("koders", newKoders);
+    return res(ctx.status(200), ctx.json(koderId));
   }),
 ];
