@@ -7,17 +7,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const getKoders = async () => {
-      const res = await fetch(`/koders/search?query=${searchQuery}`).then(
-        (res) => res.json()
-      );
-      console.log(res);
-      setKoders(res);
-    };
-    getKoders();
-  }, [searchQuery]);
-
   const form = {
     name: {
       inputName: "name",
@@ -73,20 +62,10 @@ function App() {
       email,
     };
 
-    fetch("/koders", { method: "POST", body: JSON.stringify(newKoder) })
-      .then((res) => res.json())
-      .then((res) => setKoders((prev) => [...prev, res]))
-      .catch((err) => setError("Something went wrong"));
     setError("");
   };
 
-  const deleteKoder = (id) => {
-    fetch(`/koders/${id}`, { method: "DELETE", body: JSON })
-      .then((res) => res.json())
-      .then((id) =>
-        setKoders((prev) => prev.filter((koder) => koder.id !== id))
-      );
-  };
+  const deleteKoder = (id) => {};
 
   return (
     <main className="min-h-screen bg-gray-300">
